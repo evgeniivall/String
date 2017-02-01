@@ -47,10 +47,21 @@ bool StrCmp(const char* str1, const char* str2)
             return false;
     }
     return true;
-
 }
 
+String::String(const char *str)
+{
+    size_ = StrLen(str);
+    str_ = new char[size_ + 1];
+    StrCpy(str_, str);
+}
 
+String::String(const String &source)
+{
+    size_ = source.size_;
+    str_ = new char[size_ + 1];
+    StrCpy(str_, source.str_);
+}
 
 String::String(unsigned size, char symbol)
 {
@@ -63,18 +74,9 @@ String::String(unsigned size, char symbol)
     str_[size_] = '\0';
 }
 
-String::String(const char *str)
-{   
-    size_ = StrLen(str);
-    str_ = new char[size_ + 1];
-    StrCpy(str_, str);
-}
-
-String::String(const String &source)
+String::~String()
 {
-    size_ = source.size_;
-    str_ = new char[size_ + 1];
-    StrCpy(str_, source.str_);
+    delete[] str_;
 }
 
 String& String::operator =(const String&source)
@@ -89,12 +91,16 @@ String& String::operator =(const String&source)
     return *this;
 }
 
-
 String String::operator +(String &other)
 {
     String temp(*this);
     temp += other;
     return temp;
+}
+
+String& String::operator +=(String &other)
+{
+    return this->append(other);
 }
 
 String operator+(String &str1, const char*str2)
@@ -108,52 +114,6 @@ String operator+(const char*str1, String &str2)
     String temp(str1);
     temp += str2;
     return temp;
-}
-
-
-String& String::operator +=(String &other)
-{
-    unsigned temp_size = size_ + other.size_;
-    char* temp_str = new char[temp_size + 1];
-    StrCat(temp_str, str_);
-    StrCat(temp_str, other.str_);
-    delete[] str_;
-
-    str_ = temp_str;
-    size_ = temp_size;
-    return *this;
-}
-
-
-std::ostream& operator<<(std::ostream& os, const String& str)
-{
-    os << str.str_;
-    return os;
-}
-
-std::istream& operator>>(std::istream& is, String& str)
-{
-    char BUFF[2048];
-    is >> BUFF;
-    str = BUFF;
-    return is;
-}
-String::~String()
-{
-    delete[] str_;
-}
-
-
-const char& String::operator[](int i) const
-{
-    return (i >= 0 && i < size_) ? str_[i] : 0;
-}
-
-char& String::operator[](int i)
-{
-    static char symbol;
-    symbol = '\0';
-    return (i >= 0 && i < size_) ? str_[i] : symbol;
 }
 
 int String::find(const char *pattern, unsigned start_pos)
@@ -227,6 +187,39 @@ unsigned String::replace(const char *word, const char* new_word)
     replace(word, new_word);
 }
 
+String& String::append(String &other)
+{
+    unsigned temp_size = size_ + other.size_;
+    char* temp_str = new char[temp_size + 1];
+    StrCat(temp_str, str_);
+    StrCat(temp_str, other.str_);
+    delete[] str_;
+
+    str_ = temp_str;
+    size_ = temp_size;
+    return *this;
+}
+
+String String ::subStr(unsigned position, unsigned count)
+{
+    String temp(count, 'I');
+    for(unsigned i = position; i < position + count; i++)
+    {
+        temp[i-position] = str_[i];
+    }
+    return temp;
+}
+
+void String::swap(String &other)
+{
+    if(this != &other)
+    {
+        String temp(other);
+        other = *this;
+        *this = temp;
+    }
+    return;
+}
 
 bool String::operator==(const String& other)
 {
@@ -254,6 +247,41 @@ bool String::operator>= (const String& other)
 bool String::operator<= (const String& other)
 {
     return (size_ <= other.size_) ? true : false;
+}
+
+const char& String::operator[](int i) const
+{
+    return (i >= 0 && i < size_) ? str_[i] : 0;
+}
+
+char& String::operator[](int i)
+{
+    static char symbol;
+    symbol = '\0';
+    return (i >= 0 && i < size_) ? str_[i] : symbol;
+}
+
+String::operator const char*()
+{
+    if(size_ != 0)
+    {
+        return str_;
+    }
+    return "";
+}
+
+std::ostream& operator<<(std::ostream& os, const String& str)
+{
+    os << str.str_;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, String& str)
+{
+    char BUFF[2048];
+    is >> BUFF;
+    str = BUFF;
+    return is;
 }
 
 

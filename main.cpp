@@ -4,10 +4,9 @@
 using namespace string;
 int main()
 {
-    String s1 = "Hello, World, What a World!!!!0";
-    s1.replace("World", "Sonya Gritsuk");
-
-    std::cout << s1;
-
+    String s1 = "0123456789";
+    String s2 = "Hello";
+    s1.swap(s2);
+    std::cout << s1 << s2;
     return 0;
 }

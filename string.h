@@ -14,41 +14,35 @@ class String
 {
 public:
     static const unsigned n_pos = -1;
+
     String(const char *str = "");
     String(const String&);
     String(unsigned size, char symbol);
+     ~String();
 
     String& operator =(const String&);
-
-    operator const char*()
-    {
-        if(size_ != 0)
-        {
-            return str_;
-        }
-        return "";
-    }
-
-
-    String operator+(String &other);
-    String&   operator+=(String &other);
+    String  operator+ (String &other);
+    String& operator+=(String &other);
 
     friend String operator+(String &str1, const char*str2);
     friend String operator+(const char*str1, String &str2);
 
-    unsigned strRep(const char *word, const char* newWord);
-
-    int find(const char *pattern, unsigned start_pos = 0);
+    int      find(const char *pattern, unsigned start_pos = 0);
     unsigned replace(const char *word, const char* new_word);
+    String&  append(String &other);
+    String   subStr(unsigned position, unsigned count);
+    void     swap(String &);
 
     unsigned lenght()
     {
         return size_;
     }
-
-
-
-
+    bool empty()
+    {
+        if(size_ == 0)
+            return true;
+        return false;
+    }
 
     bool operator==(const String&);
     bool operator!=(const String&);
@@ -59,11 +53,11 @@ public:
 
     const char& operator[](int) const;
     char& operator[](int);
+    operator const char*();
 
     friend std::ostream& operator<<(std::ostream&, const String&);
     friend std::istream& operator>>(std::istream&, String&);
 
-    ~String();
 private:
     unsigned size_;
     char *str_;
