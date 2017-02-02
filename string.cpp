@@ -200,9 +200,24 @@ String& String::append(String &other)
     return *this;
 }
 
+String& String::erase(unsigned position, unsigned count)
+{
+    String temp(size_ - count, '0');
+    for(unsigned i = 0; i < position; i++)
+    {
+        temp[i] = str_[i];
+    }
+    for(unsigned i = position + count; i < size_; i++)
+    {
+        temp[i - count] = str_[i];
+    }
+    *this = temp;
+    return *this;
+}
+
 String String ::subStr(unsigned position, unsigned count)
 {
-    String temp(count, 'I');
+    String temp(count, '0');
     for(unsigned i = position; i < position + count; i++)
     {
         temp[i-position] = str_[i];
@@ -283,7 +298,6 @@ std::istream& operator>>(std::istream& is, String& str)
     str = BUFF;
     return is;
 }
-
 
 
 }//namespace string

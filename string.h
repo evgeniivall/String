@@ -30,6 +30,7 @@ public:
     int      find(const char *pattern, unsigned start_pos = 0);
     unsigned replace(const char *word, const char* new_word);
     String&  append(String &other);
+    String&  erase(unsigned position, unsigned count);
     String   subStr(unsigned position, unsigned count);
     void     swap(String &);
 
