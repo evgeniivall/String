@@ -8,7 +8,7 @@ namespace string
 unsigned StrLen(const char*);
 char*    StrCpy(char*, const char*);
 char*    StrCat(char*, const char*);
-bool     StrCmp(const char*, const char*);
+int     StrCmp(const char*, const char*);
 
 class String
 {
@@ -45,12 +45,13 @@ public:
         return false;
     }
 
-    bool operator==(const String&);
-    bool operator!=(const String&);
-    bool operator> (const String&);
-    bool operator>=(const String&);
-    bool operator< (const String&);
-    bool operator<=(const String&);
+    friend bool operator==(const String str1, const String str2 );
+    friend bool operator!=(const String str1, const String str2 );
+    friend bool operator> (const String str1, const String str2 );
+    friend bool operator< (const String str1, const String str2 );
+    friend bool operator>=(const String str1, const String str2 );
+    friend bool operator<=(const String str1, const String str2 );
+
 
     const char& operator[](int) const;
     char& operator[](int);

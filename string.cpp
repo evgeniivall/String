@@ -37,16 +37,16 @@ char* StrCat(char *destination, const char *append)
     return destination;
 }
 
-bool StrCmp(const char* str1, const char* str2)
+int StrCmp(const char* str1, const char* str2)
 {
-    if(StrLen(str1) != StrLen(str2))
-        return false;
-    for(unsigned i = 0; i < StrLen(str1); i++)
+
+    for( ; *str1 == *str2; ++str1, ++str2 )
     {
-        if(str1[i] != str2[i])
-            return false;
+        if ( *str2 == '\0' )
+        return 0;
     }
-    return true;
+    return *str1 - *str2;
+
 }
 
 String::String(const char *str)
@@ -236,32 +236,32 @@ void String::swap(String &other)
     return;
 }
 
-bool String::operator==(const String& other)
+bool operator==(const String str1, const String str2 )
 {
-    return StrCmp(str_, other.str_);
+    return !(StrCmp(str1.str_, str2.str_));
 }
 
-bool String::operator!=(const String& other)
+bool operator!=(const String str1, const String str2 )
 {
-    return !(StrCmp(str_, other.str_));
+    return (StrCmp(str1.str_, str2.str_));
 }
 
-bool String::operator> (const String& other)
+bool operator>(const String str1, const String str2 )
 {
-    return (size_ > other.size_) ? true : false;
+    return (str1.size_ > str2.size_) ? true : false;
 }
 
-bool String::operator< (const String& other)
+bool operator<(const String str1, const String str2 )
 {
-    return (size_ < other.size_) ? true : false;
+    return (str1.size_ < str2.size_) ? true : false;
 }
-bool String::operator>= (const String& other)
+bool operator>=(const String str1, const String str2 )
 {
-    return (size_ >= other.size_) ? true : false;
+    return (str1.size_ >= str2.size_) ? true : false;
 }
-bool String::operator<= (const String& other)
+bool operator<=(const String str1, const String str2 )
 {
-    return (size_ <= other.size_) ? true : false;
+    return (str1.size_ <= str2.size_) ? true : false;
 }
 
 const char& String::operator[](int i) const

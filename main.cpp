@@ -4,8 +4,9 @@
 using namespace string;
 int main()
 {
-    String s1 = "0123456789";
-    s1.erase(2, 4);
-    std::cout << s1;
+    String s1 = "Hello ";
+    String s2("World!");
+    String s3 = s1+s2;
+    std::cout << s3;
     return 0;
 }
